@@ -15,7 +15,7 @@ def remove_non_letters(text):
     return re.sub(r'[^a-zA-Z\s]', '', text)
 
 
-def get_relevant_links():
+def get_relevant_links(query_to_parse):
 
 
 
@@ -27,8 +27,9 @@ def get_relevant_links():
 
     ix = open_dir("indexdir")
 
-    query = "sobby European intellectual mentioned in 809240923 a literature /./././. intellectual wales"
-    query = remove_non_letters(query)
+    #query = "sobby European intellectual mentioned in 809240923 a literature /./././. intellectual wales"
+ 
+    query = remove_non_letters(query_to_parse)
     query = query.replace("\n", " ").replace("\r", " ").replace("  ", " ").lower()
     query_tokens = word_tokenize(query)
     query_tokens = set(query_tokens)
@@ -59,7 +60,7 @@ def get_relevant_links():
     return relevant_links
 
 
-print(get_relevant_links())
+#print(get_relevant_links())
 
 """
     print (query_tokens_without_stop_words)

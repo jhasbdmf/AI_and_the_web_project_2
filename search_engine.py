@@ -10,12 +10,21 @@ def start():
 @app.route("/reversed")
 def reversed():
     query = request.args['rev']
-    relevant_links = get_relevant_links()
-    return_string = "<h1>"
-    for i in relevant_links:
-        return_string += i
-        return_string += " "
-    return_string += "</h1>"
+    relevant_links = get_relevant_links(query)
+    #return_string = "<h1>"
+    return_string = ""
+    for i in range(len(relevant_links)):
+        return_string += '<a href = "'
+        return_string += relevant_links[i]
+        return_string += '">'
+        return_string += str(i+1)
+        return_string += '</a><br>'
+        #return_string += " "
+    #return_string += "</h1>"
 
-    return return_string
+    if return_string != "": 
+        return return_string
+    else:
+        return "<h1>no results found</h1>"
+    #return '<a href = "google.com">123</a>'
     #return "<h1>"+request.args['rev'][::-1]+"NIOBA"
