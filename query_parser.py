@@ -43,6 +43,7 @@ def get_relevant_links(query_to_parse):
         nltk.download('stopwords', download_dir='/home/u083/public_html/venv/nltk_data')
         stop_words = set(stopwords.words('english'))
     """
+    stop_words = set(stopwords.words('english'))
 
     ix = open_dir("indexdir")
 
@@ -53,13 +54,16 @@ def get_relevant_links(query_to_parse):
     query_tokens = word_tokenize(query)
     query_tokens = set(query_tokens)
 
+    
     query_tokens_without_stop_words = []
     for token in query_tokens:
         if token not in stop_words:
             query_tokens_without_stop_words.append(token)
+    
 
     relevant_links = []
     for token in query_tokens_without_stop_words:
+    #for token in query_tokens:
         with ix.searcher() as searcher:
         
             whoosh_query = QueryParser("content", ix.schema).parse(token)
