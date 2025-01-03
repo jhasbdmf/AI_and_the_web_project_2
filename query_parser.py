@@ -20,11 +20,12 @@ def get_nltk_resources_in(nltk_data_dir):
         stop_words = set(stopwords.words('english'))
         # Attempt to load punkt tokenizer
         nltk.data.find('tokenizers/punkt')
+        nltk.data.find('tokenizers/punkt_tab')
     except LookupError:
         print("Downloading required NLTK resources...")
         nltk.download('stopwords', download_dir=nltk_data_dir)
         nltk.download('punkt', download_dir=nltk_data_dir)
-
+        nltk.download('punkt_tab', download_dir=nltk_data_dir)
         # Reload after downloading
         stop_words = set(stopwords.words('english'))
 
