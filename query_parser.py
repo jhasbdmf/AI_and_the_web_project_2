@@ -23,7 +23,7 @@ def get_relevant_links(query_to_parse):
         stop_words = set(stopwords.words('english'))
     except LookupError:
         #nltk.download('stopwords')
-        nltk.download('stopwords', download_dir='/home/u083/AI_and_the_web_project_2/nltk_data')
+        nltk.download('stopwords', download_dir='/home/u083/venv/nltk_data')
         stop_words = set(stopwords.words('english'))
 
     ix = open_dir("indexdir")
