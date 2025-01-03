@@ -14,17 +14,34 @@ from whoosh.index import open_dir
 def remove_non_letters(text):
     return re.sub(r'[^a-zA-Z\s]', '', text)
 
+# Function to ensure required NLTK resources are available
+def get_nltk_resources_in(nltk_data_dir):
+    try:
+        stop_words = set(stopwords.words('english'))
+        # Attempt to load punkt tokenizer
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        print("Downloading required NLTK resources...")
+        nltk.download('stopwords', download_dir=nltk_data_dir)
+        nltk.download('punkt', download_dir=nltk_data_dir)
+
+        # Reload after downloading
+        stop_words = set(stopwords.words('english'))
+
 
 def get_relevant_links(query_to_parse):
+    get_nltk_resources_in('/home/u083/public_html/venv/nltk_data')
 
 
 
+    """
     try: 
         stop_words = set(stopwords.words('english'))
     except LookupError:
         #nltk.download('stopwords')
         nltk.download('stopwords', download_dir='/home/u083/public_html/venv/nltk_data')
         stop_words = set(stopwords.words('english'))
+    """
 
     ix = open_dir("indexdir")
 
