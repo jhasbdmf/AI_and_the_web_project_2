@@ -1,7 +1,14 @@
 from flask import Flask, request
 from query_parser import get_relevant_links
+import traceback
 
 app = Flask(__name__)
+
+
+
+@app.errorhandler(500)
+def internal_error(exception):
+    return "<pre>" + traceback.format_exc() + "</pre>"
 
 @app.route("/")
 def start():
