@@ -3,11 +3,20 @@ from bs4 import BeautifulSoup
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-import re
+
 from collections import Counter
 from whoosh.index import create_in
 from whoosh.fields import Schema, TEXT, STORED
 from openai import OpenAI
+
+
+#written by GPT to remove non-letters from a string
+#via regular expressions
+from utils import remove_non_letters
+
+
+# Function to ensure required NLTK resources are available
+from utils import get_nltk_resources_in
 
 class Response_Generator:
     def __init__(self, api_key):
@@ -34,8 +43,7 @@ class Response_Generator:
 
 
 
-def remove_non_letters(text):
-    return re.sub(r'[^a-zA-Z\s]', '', text)
+
 
 """
 def generate_a_response_via_openAI(prompt, desired_temperature=1.1, max_response_length=200):
@@ -55,52 +63,76 @@ def generate_a_response_via_openAI(prompt, desired_temperature=1.1, max_response
     return chat_completion.choices[0].message.content
 """
 
-api_key = "sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA"
+#api_key = "sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA"
 
 
 
-response_generator_instance = Response_Generator(api_key)
+#response_generator_instance = Response_Generator(api_key)
 
+get_nltk_resources_in("")
+stop_words = set(stopwords.words('english'))
 
+"""
 try: 
     stop_words = set(stopwords.words('english'))
 except LookupError:
     nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
+"""
 
 
 
+#set the website to be crawler
 url_prefix_of_the_crawled_website = 'https://vm009.rz.uos.de/crawl/'
+#set the intial web page for a crawler
 start_url = url_prefix_of_the_crawled_website + 'index.html'
 
-
+#push the initial web page url to the list of urls to be visited by the crawler
 agenda = [start_url]
+#initialize the list of visited links
 visited_links = []
-index = {}
 
+#index = {}
+
+#initialize the index schema with 4 attributes/columns
 schema = Schema(
+    #page title as determined by <head><title></title></head>
+    #page counted as twice as relevant if a query token is there
+    #copared to the case when the same token is in any other 
+    #part of a page
     title=TEXT(stored=True, field_boost=2.0),
+    #page url which is stored in the schema and yet is irrelevant for page ranking
     page_url = STORED, 
+    #page text
     content=TEXT,
+    #summary of the page text
     content_summary = STORED
 )
 
+#created an index instance with a given schema
 ix = create_in("indexdir", schema)
 writer = ix.writer()
 
-
+#while there are still links to be visited
 while agenda:
+    #remove one item from the agenda and store it in the url variable
     url = agenda.pop()
+    #add that url to the list of visited links
     visited_links.append(url)
     print("Get ",url)
     
+    
+    #send an http get request to a web page referred to by the content of the url variable
+    #and store the result in the r variable 
     r = requests.get(url)
-    #print(r, r.encoding)
+
+    #if get request is successful
     if r.status_code == 200:
-        #print(r.headers)
+        
+        #initialize a bs4 parser with that web page
         soup = BeautifulSoup(r.content, 'html.parser')
 
-         #find all link-tags on a page
+        #find all a-tags on a page
         list_of_all_links_on_a_page = soup.find_all('a')
         #iterate over all a-tags of a page
         for href in list_of_all_links_on_a_page:
@@ -108,12 +140,14 @@ while agenda:
             if href.get('href'):
                 
                 #if the iterated a-tag points to page from the website to crawl,
-                #then store the url
+                #then store the url of that page
                 if url_prefix_of_the_crawled_website in href.get('href'):
                     link = href.get('href')
                 #otherwise append the url of the a-tag to the website url-prefix
                 #this would make dynamic urls from the website to be crawled complete
                 #and invalidate urls from other websites 
+                #a crawler would fail to get info from those
+                #invalidated urls later
                 else:
                     link = url_prefix_of_the_crawled_website + href.get('href')
                 #if the resultant url is neither visited already nor is in the agenda,
@@ -123,7 +157,7 @@ while agenda:
 
 
         #get page title
-        page_title = ""
+        page_title = "Untitled page"
         if soup.title:
             page_title = soup.title.text
 
@@ -133,7 +167,7 @@ while agenda:
         for head in soup.find_all('head'):
             head.decompose()
 
-        #get lowercase of a web page text without line breaks and double spaces
+        #get lowercase text of a web page without line breaks and double spaces
         page_text = soup.get_text().replace("\n", " ").replace("\r", " ").replace("  ", " ").lower()
 
         prompt = "Summarize the following text in two sentences. The text to summarize is: {"
@@ -177,7 +211,7 @@ while agenda:
 
 
 
-
+#save crawling results
 writer.commit()
 
 

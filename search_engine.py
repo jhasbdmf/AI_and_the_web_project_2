@@ -20,9 +20,10 @@ def search_for_pages():
     search_results = get_relevant_links(query)
     
     #return_string = "<h1>"
-    return_string = "<html><head></head><body><div id='header' align='center'><form action='search_for_pages' method='get'><input name='search_query' value=" + query + "></input></form></div>"
+    return_string = "<html><head></head><body>"
+    return_string += "<div id='header' align='center'><form action='search_for_pages' method='get'><input name='search_query' value=" + query + "></input></form></div>"
     return_string += "<div id='main-content' style='width: 50%; margin-left: auto; margin-right: auto;'>"
-    if len(search_results)>0:
+    if len(search_results) > 0:
         for i in range(len(search_results)):
             return_string += '<a href = "' + search_results[i]["page_url"] + '">'
             return_string += search_results[i]["title"]
