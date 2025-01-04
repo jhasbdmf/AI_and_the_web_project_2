@@ -17,15 +17,14 @@ def start():
 @app.route("/reversed")
 def reversed():
     query = request.args['rev']
-    relevant_links = get_relevant_links(query)
+    search_results = get_relevant_links(query)
     #return_string = "<h1>"
-    return_string = ""
-    for i in range(len(relevant_links)):
-        return_string += '<a href = "'
-        return_string += relevant_links[i]
-        return_string += '">'
-        return_string += str(i+1)
+    return_string = "<form action='reversed' method='get'><input name='rev'></input></form>"
+    for i in range(len(search_results)):
+        return_string += '<a href = "' + search_results[i]["page_url"] + '">'
+        return_string += search_results[i]["title"]
         return_string += '</a><br>'
+        return_string += '<p>' + search_results[i]["content_summary"] + '</p><br>'
         #return_string += " "
     #return_string += "</h1>"
 

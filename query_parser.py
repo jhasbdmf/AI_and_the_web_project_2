@@ -69,9 +69,8 @@ def get_relevant_links(query_to_parse):
             whoosh_query = QueryParser("content", ix.schema).parse(token)
             results = searcher.search(whoosh_query)
             for r in results:
-                print(r['title'])
-                if not r['title'] in relevant_links:
-                    relevant_links.append(r['title'])
+                if not r in relevant_links:
+                    relevant_links.append(r)
             
 
         """
