@@ -12,7 +12,19 @@ def internal_error(exception):
 
 @app.route("/")
 def start():
-    return "<form action='search_for_pages' method='get'><input name='search_query'></input></form>"
+    return """
+        <html>
+            <head></head>
+            <body>
+                <div align = 'center' style='width: 50%; margin-left: auto; margin-right: auto; margin-top: 5%;'>
+                    <form action='search_for_pages' method='get'>
+                        <label for='search_query' style='display: block; margin-bottom: 5px; font-weight: bold;'>Your Search Query:</label>
+                        <input name='search_query' style='width: 100%;'></input>
+                    </form>
+                </div>
+            <body>
+        <html>
+    """
 
 @app.route("/search_for_pages")
 def search_for_pages():
@@ -21,7 +33,17 @@ def search_for_pages():
     
     #return_string = "<h1>"
     return_string = "<html><head></head><body>"
-    return_string += "<div id='header' align='center'><form action='search_for_pages' method='get'><input name='search_query' value=" + query + "></input></form></div>"
+    return_string += """
+        <div id='header' align = 'center' style='width: 50%; margin-left: auto; margin-right: auto; margin-top: 5%;'>
+            <form action='search_for_pages' method='get'>
+                <label for='search_query' style='display: block; margin-bottom: 1%; font-weight: bold;'>
+                    Your Search Query:
+                </label>
+                <input name='search_query' value=""" + query + """ style='width: 100%;'>
+                </input>
+            </form>
+        </div>
+        """
     return_string += "<div id='main-content' style='width: 50%; margin-left: auto; margin-right: auto;'>"
     if len(search_results) > 0:
         for i in range(len(search_results)):
