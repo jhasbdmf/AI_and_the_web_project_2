@@ -1,6 +1,8 @@
 from flask import Flask, request
 from query_parser import get_relevant_links
 import traceback
+import pdb; 
+
 
 app = Flask(__name__)
 
@@ -46,8 +48,12 @@ def search_for_pages():
         """
     return_string += "<div id='main-content' style='width: 50%; margin-left: auto; margin-right: auto;'>"
     if len(search_results) > 0:
+        #pdb.set_trace()
         for i in range(len(search_results)):
-            return_string += '<a href = "' + search_results[i]["page_url"] + '">'
+           
+            return_string += '<a href = "' 
+            return_string += search_results[i]["page_url"] 
+            return_string += '">'
             return_string += search_results[i]["title"]
             return_string += '</a>'
             return_string += '<p>' + search_results[i]["content_summary"] + '</p><br>'

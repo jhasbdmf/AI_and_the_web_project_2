@@ -3,9 +3,11 @@ from bs4 import BeautifulSoup
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 from collections import Counter
 from whoosh.qparser import QueryParser
 from whoosh.index import open_dir
+import pdb; 
 
 #written by GPT to remove non-letters from a string
 #via regular expressions
@@ -14,6 +16,10 @@ from utils import remove_non_letters
 
 # Function to ensure required NLTK resources are available
 from utils import get_nltk_resources_in
+
+def hit_to_dict(hit):
+    # Convert hit fields to a dictionary
+    return {fieldname: hit[fieldname] for fieldname in hit.fields()}
 
 
 def get_relevant_links(query_to_parse):
@@ -36,11 +42,13 @@ def get_relevant_links(query_to_parse):
     #only store unique query tokens
     query_tokens = set(query_tokens)
 
-    #remove stop words from a query i.e. remove irrelevant tokens from the query
+    # Create a Porter stemmer object
+    ps = PorterStemmer()
+    #remove stop words from a query i.e. remove irrelevant tokens from the query and stem the rest
     query_tokens_without_stop_words = []
     for token in query_tokens:
         if token not in stop_words:
-            query_tokens_without_stop_words.append(token)
+            query_tokens_without_stop_words.append(ps.stem(token))
     
     #this is the list of whoosh scheme instances which are relevant for a query
     #this list is to be returned by this method i.e.
@@ -54,9 +62,11 @@ def get_relevant_links(query_to_parse):
             results = searcher.search(whoosh_query)
             #add to relevant_links only those whoosh schema instances
             #which are not already there
+
             for r in results:
-                if not r in relevant_links:
-                    relevant_links.append(r)
+                r_to_dict = dict(r)
+                if not r_to_dict in relevant_links:
+                    relevant_links.append(r_to_dict)
             
 
         """

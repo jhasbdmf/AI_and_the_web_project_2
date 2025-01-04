@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from collections import Counter
 from whoosh.index import create_in
 from whoosh.fields import Schema, TEXT, STORED
+from whoosh.analysis import StemmingAnalyzer
 from openai import OpenAI
 
 
@@ -104,7 +105,7 @@ schema = Schema(
     #page url which is stored in the schema and yet is irrelevant for page ranking
     page_url = STORED, 
     #page text
-    content=TEXT,
+    content=TEXT(analyzer=StemmingAnalyzer()),
     #summary of the page text
     content_summary = STORED
 )
