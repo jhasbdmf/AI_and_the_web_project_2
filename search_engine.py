@@ -19,7 +19,7 @@ def reversed():
     query = request.args['rev']
     search_results = get_relevant_links(query)
     #return_string = "<h1>"
-    return_string = "<form action='reversed' method='get'><input name='rev'></input></form>"
+    return_string = ""
     for i in range(len(search_results)):
         return_string += '<a href = "' + search_results[i]["page_url"] + '">'
         return_string += search_results[i]["title"]
