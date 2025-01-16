@@ -65,7 +65,7 @@ def generate_a_response_via_openAI(prompt, desired_temperature=1.1, max_response
 """
 
 #api_key = "sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA"
-
+api_key = "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"
 
 
 #response_generator_instance = Response_Generator(api_key)
