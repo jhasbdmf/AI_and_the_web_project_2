@@ -19,6 +19,8 @@ from utils import remove_non_letters
 # Function to ensure required NLTK resources are available
 from utils import get_nltk_resources_in
 
+
+#this one is not used since I have no valid api key
 class Response_Generator:
     def __init__(self, api_key):
         self.model = OpenAI(api_key=api_key)
@@ -42,44 +44,15 @@ class Response_Generator:
 #from query_parser import get_relevant_links
 
 
-
-
-
-
-"""
-def generate_a_response_via_openAI(prompt, desired_temperature=1.1, max_response_length=200):
-    #this one generates a response with given parameters
-    chat_completion = OpenAI.
-    Openai.сhat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "user", 
-                     "content": prompt
-                    }
-                ],
-                temperature=desired_temperature,  
-                max_tokens=max_response_length
-            )
-    #this one returns the best response option gpt provides to the prompt given parameters
-    return chat_completion.choices[0].message.content
-"""
-
+#none of these keys works, so I decided to use all of page's content rather than its summary in the page preview the search engine gives
 #api_key = "sk-svcacct-sasYDh93HtW8T-ZtXNCUElcOwmpB__D0ql2JJXLPl3kTrwrVeY2W_hTXl1AhYMsT3BlbkFJLcW4LbU2SOAgDFeOFXJyCA-l_xvOKYqPDTy1YJ2lGsEqPHLIXGwctBw7FOuGVAA"
-api_key = "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"
-
+#api_key = "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"
 
 #response_generator_instance = Response_Generator(api_key)
 
 get_nltk_resources_in("")
 stop_words = set(stopwords.words('english'))
 
-"""
-try: 
-    stop_words = set(stopwords.words('english'))
-except LookupError:
-    nltk.download('stopwords')
-stop_words = set(stopwords.words('english'))
-"""
 
 
 

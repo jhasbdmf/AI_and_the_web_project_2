@@ -81,6 +81,14 @@ def get_relevant_links(query_to_parse):
     return relevant_links
 
 
+
+
+
+
+
+
+
+
 #print(get_relevant_links())
 
 """

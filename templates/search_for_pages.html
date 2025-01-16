@@ -3,24 +3,38 @@
 	</head>
 	<body>
         	<div align = 'center' style='width: 50%; margin-left: auto; margin-right: auto; margin-top: 5%;'>
+					<!-- this block displays the same label and the same inout box as start.html  -->
+
             		<form action='search_for_pages' method='get'>
                 		<label for='search_query'
 					style='display: block; margin-bottom: 1%; font-weight: bold;'>
                     			Your Search Query:
                 		</label>
+					<!-- the only difference is that the input box is non-empty now -->
+					<!-- the input box now contains the query entered to -->
+					<!-- the input box from start.html -->
                 	<input name='search_query' value= {{ search_query }} style='width: 100%;'>
                 	</input>
             		</form>
        		</div>
 			<div id='main-content' style='width: 50%; margin-left: auto; margin-right: auto;'>
+				<!-- This block displays the link and content of those web pages -->
+				<!-- which are deemed relevant for the query by the get_relevant_pages method -->
+
+				<!-- This is a creates a list -->
 				<ul>
+					<!-- This displays relevant page link and content one by one as list items-->
 					{% if found_pages|length > 0 %}
 						{% for page in found_pages  %}
 							<li>
 								<a href = {{ page["page_url"] }}>{{ page["title"] }}</a>
+								<!-- Although it says "content_summary" below, none of my open ai keys worked -->
+								<!-- so I could not have page content summarized, so all of page content is displayed there -->
+								<!-- This should not be a problem for the pet website we had to crawl -->
 								<p>{{ page["content_summary"] }}</p>
 							</li>
 						{% endfor %}
+					<!-- if no query-relevant page is identified, there is a corresponding message -->
 					{% else %}
 						<p>No relevant pages found</p>
 					{% endif %}
