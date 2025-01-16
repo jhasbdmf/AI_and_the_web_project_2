@@ -1,6 +1,10 @@
 To access the search engine, log into the UOS VPN, open your browser
 and go to http://vm322.rz.uni-osnabrueck.de/u083/AI_and_the_web_project_2/search.wsgi/
 
+Run the crawler just as you would run any python app on your operation system.
+On windows, the terminal command "python crawler.py" should suffice if you
+have installed all python packages from requirements.txt.
+
 On that page you will see an input box. Enter your query there.
 After that you will be forwarded to another web page of the project
 which contains links and content of pages which are relevant to

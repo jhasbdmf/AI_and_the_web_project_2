@@ -8,7 +8,7 @@ from collections import Counter
 from whoosh.index import create_in
 from whoosh.fields import Schema, TEXT, STORED
 from whoosh.analysis import StemmingAnalyzer
-from openai import OpenAI
+#from openai import OpenAI
 
 
 #written by GPT to remove non-letters from a string
